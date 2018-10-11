@@ -86,11 +86,11 @@ public class Project1 {
 		
 		if (newSecond >= 60){		// If final display number reaches 60
 			newMinute ++;			// Increments minutes
-			newSecond = 00;		// Returns to zero
+			newSecond = newSecond % 60;		// Returns to zero
 		}	
 		if (newMinute >= 60){		// If final display number reaches 60
 			newHour ++;			// Increments hours
-			newMinute = 00;		// Returns to zero
+			newMinute = newMinute % 60;		// Returns to zero
 		}
 		if (newHour >= 12){		// If final display number reaches 60			
 			newHour = 00;		// Returns to zero
