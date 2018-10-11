@@ -15,6 +15,7 @@ public class Proj7 {
 		Board b = new Board();
 		boolean game = true;
 		char[][] board = new char[b.getRow()][b.getCol()];
+		boolean arrowCount = true;
 		while (b.checkDead() == false) {
 			b.effects();
 			char input = v.Turn();
@@ -28,8 +29,11 @@ public class Proj7 {
 
 			case 'S':
 			case 's':
-				input = v.Shoot();
-				b.Shoot(input);
+				if(arrowCount == true){
+					input = v.Shoot();
+					b.Shoot(input);
+				}
+				else v.NoArrows();
 				break;
 				
 			case 'G':

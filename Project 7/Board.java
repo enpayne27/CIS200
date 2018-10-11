@@ -17,7 +17,8 @@ public class Board {
 	private Player Player1;
 	private boolean wumpusKill;
 	private boolean goldCount;
-	
+	private boolean arrowCount;
+
 	/**
 	 * This is the class' main method.
 	 *
@@ -26,8 +27,9 @@ public class Board {
 		Player1 = new Player(rowSize-1,0);
 		Random r = new Random();
 		v = new View();
-		
-		
+		arrowCount = true;
+
+
 		//Set board array
 		//Chooses random array size between 4-6
 		rowSize = r.nextInt(3) + 4;
@@ -56,27 +58,27 @@ public class Board {
 		//randomly places one Wumpus spot
 		//we don't want 0 because that's where user will start
 		do{
-		spot = r.nextInt(boardSize);
-		row = spot / rowSize; 
-		col = spot % colSize; 
+			spot = r.nextInt(boardSize);
+			row = spot / rowSize; 
+			col = spot % colSize; 
 		}while (row < rowSize && col < colSize && cellBoard[row][col].Get('g'));
 		cellBoard[row][col].Set('w', true);
 		//board[row][col] = 'w';
-		
+
 		//randomly places one gold spot ('g' --> gold) 
 		//spot will be from 1-24 -- we don't want 0 because that's where user will start
 		do{
-		spot = r.nextInt(boardSize);
-		row = spot / rowSize; 
-		col = spot % colSize; 
+			spot = r.nextInt(boardSize);
+			row = spot / rowSize; 
+			col = spot % colSize; 
 		}while (row < rowSize && col < colSize && (cellBoard[row][col].Get('w') || cellBoard[row][col].Get('p')));
 		cellBoard[row][col].Set('g', true);
 		//board[row][col] = 'g';
 		row = rowSize -1;
 		col = 0;
-		
+
 		//char cur = board[row][col];
-		
+
 		/*while (cur == 'e') {
 			//cur = board[row][col];
 			for (int i = 0; i < rowSize; i++) { 
@@ -90,9 +92,9 @@ public class Board {
 				}
 				System.out.println();
 			}*/
-		
+
 	}
-	
+
 	/**
 	 * Checks adjacent cells to determine which print method to use.
 	 *
@@ -143,7 +145,7 @@ public class Board {
 			}
 		}
 		else adj[3] = 'e';
-		
+
 		for(int i = 0; i < 4; i++){
 			switch(adj[i]){
 			case 'p':
@@ -159,7 +161,7 @@ public class Board {
 			v.Gold();
 		}
 	}
-	
+
 	/**
 	 * Move method function.
 	 *
@@ -191,7 +193,7 @@ public class Board {
 				v.Wall();
 				return false;
 			}
-			
+
 		case 'L':
 		case 'l':
 			if(col > 0){
@@ -218,57 +220,62 @@ public class Board {
 		default: return false;
 		}
 	}
-	
+
 	/**
 	 * Shoot method function.
 	 *
 	 * @param Takes in user's selected direction to shoot.
 	 */
 	public void Shoot(char input){
-		switch(input){
-		case 'U':
-		case 'u':
-			for(int i = row; i > 0; i--) {
-				if(cellBoard[i][col].Get('w')){
-					v.Scream(true);
-					wumpusKill = true;
-					cellBoard[i][col].Set('w', false);
+		if(arrowCount == true){
+			switch(input){
+			case 'U':
+			case 'u':
+				for(int i = row; i > 0; i--) {
+					if(cellBoard[i][col].Get('w')){
+						v.Scream(true);
+						wumpusKill = true;
+						cellBoard[i][col].Set('w', false);
+					}
 				}
-			}
 
-		case 'D':
-		case 'd':
-			for(int i = row; i < rowSize; i++) {
-				if(cellBoard[i][col].Get('w')){
-					v.Scream(true);
-					wumpusKill = true;
-					cellBoard[i][col].Set('w', false);
+			case 'D':
+			case 'd':
+				for(int i = row; i < rowSize; i++) {
+					if(cellBoard[i][col].Get('w')){
+						v.Scream(true);
+						wumpusKill = true;
+						cellBoard[i][col].Set('w', false);
+					}
 				}
-			}
-			
-		case 'L':
-		case 'l':
-			for(int i = col; i > 0; i--) {
-				if(cellBoard[i][col].Get('w')){
-					v.Scream(true);
-					wumpusKill = true;
-					cellBoard[i][col].Set('w', false);
-				}
-			}
 
-		case 'R':
-		case 'r':
-			for(int i = col; i < colSize; i++) {
-				if(cellBoard[i][col].Get('w')){
-					v.Scream(true);
-					wumpusKill = true;
-					cellBoard[i][col].Set('w', false);
+			case 'L':
+			case 'l':
+				for(int i = col; i > 0; i--) {
+					if(cellBoard[i][col].Get('w')){
+						v.Scream(true);
+						wumpusKill = true;
+						cellBoard[i][col].Set('w', false);
+					}
+				}
+
+			case 'R':
+			case 'r':
+				for(int i = col; i < colSize; i++) {
+					if(cellBoard[i][col].Get('w')){
+						v.Scream(true);
+						wumpusKill = true;
+						cellBoard[i][col].Set('w', false);
+					}
 				}
 			}
+			arrowCount = false;
+			Player1.Set('a', false);
 		}
-		Player1.Set('a', false);
+		else v.NoArrows();
 	}
-	
+
+
 	/**
 	 * Grab function method.
 	 *
@@ -282,7 +289,7 @@ public class Board {
 			Player1.Set('g', true);
 		}
 	}
-	
+
 	/**
 	 * Climb function method
 	 *
@@ -307,7 +314,7 @@ public class Board {
 			return true;
 		}
 	}
-	
+
 	/**
 	 * Gets row size
 	 *
@@ -316,7 +323,7 @@ public class Board {
 	public int getRow() {
 		return rowSize;
 	}
-	
+
 	/**
 	 * Gets column size
 	 *
@@ -325,7 +332,7 @@ public class Board {
 	public int getCol() {
 		return colSize;
 	}
-	
+
 	/**
 	 * Gets current row position.
 	 *
@@ -334,7 +341,7 @@ public class Board {
 	public int getCurRow() {
 		return Player1.getPosition('r');
 	}
-	
+
 	/**
 	 * Gets current column position. 
 	 *
@@ -343,7 +350,7 @@ public class Board {
 	public int getCurCol() {
 		return Player1.getPosition('c');
 	}
-	
+
 	/**
 	 * Checks if the player has lost.
 	 *
