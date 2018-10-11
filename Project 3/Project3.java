@@ -21,6 +21,7 @@ public class Project3 {
 		int jFactorial = 0;
 		int ijFactorial = 0;
 		int xcoeff = 0;
+		int t;
 	
 		System.out.print("Enter a positive integer bound: ");
 		n = keyboard.nextInt();		//Reads in bound from user
@@ -29,6 +30,9 @@ public class Project3 {
 		System.out.println();
 		
 		for(i = 0; i <= n; i++){	//Creates number of rows
+			for(t = 0; t < n-i; t++){
+				System.out.print(" ");
+			}
 			for(j = 0; j <= i; j++){	//Creates number of columns
 				if(j == 0 || j == i){
 					System.out.print("1 ");
@@ -53,7 +57,24 @@ public class Project3 {
 						k = ijFactorial;
 					}
 					x = iFactorial / (jFactorial * ijFactorial);
-					System.out.print(x + " ");			
+					if(i < 5){
+						System.out.print(x + " ");
+					}
+					else if(x <= 9 && (i >=5 && i < 9)){
+						System.out.print(x + " ");
+					}
+					else if (x > 9 && (i >= 5 && i < 9)){
+						System.out.print(x + " ");
+					}
+					else if (x <= 9 && i >= 9){
+						System.out.print(x + " ");
+					}
+					else if ((x > 9 && x < 100) && i >= 9){
+						System.out.print(x + " ");
+					}
+					else if (x >= 100 && i >= 9){
+						System.out.print(x + " ");
+					}
 				}					
 			}//End of columns
 			System.out.println();		
